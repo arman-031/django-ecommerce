@@ -12,22 +12,29 @@
                     <th>title</th>
                     <th>Price</th>
                     <th>Quantity</th>
+                    <th>color</th>
+                    <th>size</th>
                     <th>Total</th>
                     <th>Remove</th>
                 </tr>
                 </thead>
                 <tbody class="align-middle">
+                {% for item in cart %}
                 <tr>
-                    <td class="align-middle"><img src="img/product-1.jpg" alt="" style="width: 50px;"> image</td>
-                    <td class="align-middle"> product name</td
-                    <td class="align-middle">$150</td>
-                    <td class="align-middle">1
+                    <td class="align-middle"><img src="{{item.product.image.url}}" alt="" style="width: 50px;"> image
                     </td>
-                    <td class="align-middle">$150</td>
+                    <td class="align-middle"> {{item.product.title}}</td>
+                    <td class="align-middle">${{item.price}}</td>
+                    <td class="align-middle">{{item.quantity}}</td>
+                    <td class="align-middle">{{item.color}}</td>
+                    <td class="align-middle">{{item.size}}</td>
+                    <td class="align-middle">${{item.total}}</td>
                     <td class="align-middle">
-                        <button class="btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+                        <a href="{% url 'cart:cart_del' item.unique_id %}" class="btn btn-sm btn-danger"><i
+                                class="fa fa-times"></i> </a>
                     </td>
                 </tr>
+                {%endfor %}
 
                 </tbody>
             </table>
