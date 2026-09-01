@@ -2,7 +2,8 @@ from urllib import request
 from django.contrib.auth import authenticate , login, logout
 from django.shortcuts import render,redirect
 from django.views import View
-from .forms import LoginForm ,RegisterForm
+from .forms import LoginForm ,RegisterForm,AddressCreationForm
+
 from random import randint
 from .models import Otp
 
@@ -45,3 +46,21 @@ class RegisterView(View):
             form.add_error('phone','invalid phone daita')
 
         return render(request,'account/login.html',{'form':form})
+
+
+
+class AddAddressView(View):
+    def post(self,request):
+        form=AddressCreationForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+            next_page= request.GET.get('next')
+            if next_page:
+                return redirect(next_page)
+            return redirect('account:add_address')
+        return render(request,'account/add_address.html',{'form':form})
+    def get(self,request):
+        form=AddressCreationForm()
+        return render(request,'account/add_address.html',{'form':form})

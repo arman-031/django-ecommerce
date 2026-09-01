@@ -1,0 +1,66 @@
+```html
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+
+<div class="container-fluid py-5">
+    <div class="row px-xl-5 justify-content-center">
+
+        <div class="col-lg-8">
+
+            <h5 class="section-title position-relative text-uppercase mb-3">
+                <span class="bg-secondary pr-3">آدرس شما</span>
+            </h5>
+
+            <div class="bg-light p-30">
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row">
+
+                        <div class="col-md-6 form-group">
+                            <label>نام و نام خانوادگی</label>
+                            {{ form.fullname }}
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>ایمیل</label>
+                            {{ form.email }}
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>شماره تلفن</label>
+                            {{ form.phone }}
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>کد پستی</label>
+                            {{ form.postcode }}
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <label>آدرس</label>
+                            {{ form.address }}
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary py-2 px-4">
+                                ثبت آدرس
+                            </button>
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+```

@@ -15,11 +15,11 @@
                     <th>color</th>
                     <th>size</th>
                     <th>Total</th>
-                    <th>Remove</th>
+
                 </tr>
                 </thead>
                 <tbody class="align-middle">
-                {% for item in cart %}
+                {% for item in order.items.all %}
                 <tr>
                     <td class="align-middle"><img src="{{item.product.image.url}}" alt="" style="width: 50px;"> image
                     </td>
@@ -30,8 +30,7 @@
                     <td class="align-middle">{{item.size}}</td>
                     <td class="align-middle">${{item.total}}</td>
                     <td class="align-middle">
-                        <a href="{% url 'cart:cart_del' item.unique_id %}" class="btn btn-sm btn-danger"><i
-                                class="fa fa-times"></i> </a>
+
                     </td>
                 </tr>
                 {%endfor %}
@@ -40,9 +39,10 @@
             </table>
         </div>
         <div class="col-lg-4">
-            <form class="mb-30" action="">
+            <form class="mb-30" method="post" action="{% url 'cart:discount' order.id %}">
+                {%csrf_token%}
                 <div class="input-group">
-                    <input type="text" class="form-control border-0 p-4" placeholder="Coupon Code">
+                    <input type="text" name="discount_code" class="form-control border-0 p-4" placeholder="کد تخفیف">
                     <div class="input-group-append">
                         <button class="btn btn-primary">Apply Coupon</button>
                     </div>
@@ -52,22 +52,29 @@
                     class="bg-secondary pr-3">Cart Summary</span></h5>
             <div class="bg-light p-30 mb-5">
                 <div class="border-bottom pb-2">
-                    <div class="d-flex justify-content-between mb-3">
-                        <h6>Subtotal</h6>
-                        <h6>$150</h6>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Shipping</h6>
-                        <h6 class="font-weight-medium">$10</h6>
-                    </div>
+
+
                 </div>
                 <div class="pt-2">
                     <div class="d-flex justify-content-between mt-2">
                         <h5>Total</h5>
-                        <h5>${{cart.total}}</h5>
+                        <h5>${{order.total_price}}</h5>
                     </div>
-                    <a href="{% url 'cart:order_add'%}" class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed To Checkout</a>
+                    <a href="" class="btn btn-block btn-success font-weight-bold my-3 py-3">پرداخت</a>
                 </div>
+                {% if request.user.addresses.all %}
+                <select class="form-control" aria-label="Default select example">
+                    <option selected>آدرس خود را انتخاب کنید</option>
+                    {%for address in request.user.addresses.all%}
+                    <option value="1">{{address.address}}</option>
+                    {%endfor%}
+                </select>
+                 <a href="{%url 'account:add_address'%}?next={% url 'cart:order_detail' order.id %}"
+                   class="btn btn-block btn-primary font-weight-bold my-3 py-3">ثبت آدرس</a>
+                {%else%}
+                <a href="{%url 'account:add_address'%}?next={% url 'cart:order_detail' order.id %}"
+                   class="btn btn-block btn-primary font-weight-bold my-3 py-3">آدرسی برای شما ثبت نشده جهت ثبت آدرس کلیک کنید</a>
+                {%endif%}
             </div>
         </div>
     </div>

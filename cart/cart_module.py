@@ -1,4 +1,3 @@
-
 from product.models import Product
 
 CART_SESSION_ID = "cart"
@@ -19,9 +18,11 @@ class Cart:
         for item in cart.values():
             item['product'] = Product.objects.get(id=int(item['id']))
             item['total'] = int(item['quantity']) * float(item['price'])
-            item['unique_id'] = self.unique_id_generator( item['id'],item['color'],item['size'])
+            item['unique_id'] = self.unique_id_generator(item['id'], item['color'], item['size'])
             yield item
 
+    def remove_cart(self):
+        del self.session[CART_SESSION_ID]
 
     def unique_id_generator(self, id, color, size):
         result = f'{id}-{color}-{size}'
@@ -30,16 +31,20 @@ class Cart:
     def add(self, product, quantity, color, size):
         unique = self.unique_id_generator(product.id, color, size)
         if unique not in self.cart:
-            self.cart[unique] = {"quantity": 0, "price": str(product.price), "color": color, "size": size,
+            self.cart[unique] = {"quantity": 0, "price": float(product.price), "color": color, "size": size,
                                  "id": product.id}
         self.cart[unique]["quantity"] += int(quantity)
         self.save()
 
-    def remove(self,id):
+    def total(self):
+        cart = self.cart.values()
+        total = sum(item['price'] * item['quantity'] for item in cart)
+        return total
+
+    def remove(self, id):
         if id in self.cart:
             del self.cart[id]
             self.save()
 
     def save(self):
         self.session.modified = True
-

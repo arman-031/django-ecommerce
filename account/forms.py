@@ -3,7 +3,8 @@ from django.core import validators
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django import forms
-from .models import User
+from .models import User, Address
+
 
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
@@ -55,3 +56,8 @@ class LoginForm(forms.Form):
 
 class RegisterForm(forms.Form):
     phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),validators=[validators.MaxLengthValidator(50)])
+
+class AddressCreationForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        exclude = ['user']
