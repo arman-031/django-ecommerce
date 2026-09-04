@@ -5,27 +5,35 @@ class Size(models.Model):
 
     def __str__(self):
         return self.title
+    class Meta:
+        verbose_name_plural = 'سایز'
 
 class Color(models.Model):
     title = models.CharField(max_length=120)
+    class Meta:
+        verbose_name_plural = 'رنگ '
 
     def __str__(self):
         return self.title
 
 class Category(models.Model):
-    title = models.CharField(max_length=120)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True,related_name='sub')
+    title = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100)
     def __str__(self):
         return self.title
+    class Meta:
+        verbose_name_plural = 'دسته بندی'
 
 class Product(models.Model):
+    category = models.ManyToManyField(Category)
     title = models.CharField(max_length=100)
     description = models.TextField()
     price = models.FloatField()
     discount = models.FloatField()
     image = models.ImageField(upload_to='products')
-    size = models.ManyToManyField(Size,blank=True,null=True,related_name='products')
+    size = models.ManyToManyField(Size,blank=True,related_name='products')
     color = models.ManyToManyField(Color,related_name='products')
-    category = models.ManyToManyField(Category,related_name='products',blank=True,null=True)
     def __str__(self):
         return self.title
 
@@ -41,3 +49,5 @@ class Information(models.Model):
 
     def __str__(self):
         return self.text[:30]
+    class Meta:
+        verbose_name_plural = 'توضیحات'

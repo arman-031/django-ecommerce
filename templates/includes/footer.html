@@ -1,10 +1,285 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% load static %}
+
+<div class="container-fluid bg-dark text-secondary mt-5 pt-5">
+
+    <div class="row px-xl-5 pt-5">
+
+        <!-- About -->
+        <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
+
+            <h5 class="text-secondary text-uppercase mb-4">
+                درباره فروشگاه
+            </h5>
+
+            <p class="mb-4">
+                فروشگاه اینترنتی برای خرید آسان و سریع محصولات.
+                تمامی محصولات با اطلاعات کامل در اختیار شما قرار می‌گیرند.
+            </p>
+
+            <p class="mb-2">
+                <i class="fa fa-map-marker-alt text-primary mr-3"></i>
+                ایران
+            </p>
+
+            <p class="mb-2">
+                <i class="fa fa-envelope text-primary mr-3"></i>
+                info@example.com
+            </p>
+
+            <p class="mb-0">
+                <i class="fa fa-phone-alt text-primary mr-3"></i>
+                09123456789
+            </p>
+
+        </div>
+
+
+        <!-- Quick Links -->
+        <div class="col-lg-8 col-md-12">
+
+            <div class="row">
+
+                <div class="col-md-4 mb-5">
+
+                    <h5 class="text-secondary text-uppercase mb-4">
+                        دسترسی سریع
+                    </h5>
+
+                    <div class="d-flex flex-column justify-content-start">
+
+                        <!-- Home -->
+                        <a class="text-secondary mb-2"
+                           href="{% url 'Home:home' %}">
+
+                            <i class="fa fa-angle-right mr-2"></i>
+                            خانه
+
+                        </a>
+
+
+                        <!-- Products -->
+                        <a class="text-secondary mb-2"
+                           href="{% url 'product:product_list' %}">
+
+                            <i class="fa fa-angle-right mr-2"></i>
+                            فروشگاه
+
+                        </a>
+
+
+                        <!-- Cart -->
+                        <a class="text-secondary mb-2"
+                           href="{% url 'cart:cart_detail' %}">
+
+                            <i class="fa fa-angle-right mr-2"></i>
+                            سبد خرید
+
+                        </a>
+
+
+                        <!-- Contact -->
+                        <a class="text-secondary mb-2"
+                           href="#">
+
+                            <i class="fa fa-angle-right mr-2"></i>
+                            تماس با ما
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- Account -->
+                <div class="col-md-4 mb-5">
+
+                    <h5 class="text-secondary text-uppercase mb-4">
+                        حساب کاربری
+                    </h5>
+
+                    <div class="d-flex flex-column justify-content-start">
+
+                        {% if request.user.is_authenticated %}
+
+                            <a class="text-secondary mb-2"
+                               href="{% url 'account:logout' %}">
+
+                                <i class="fa fa-angle-right mr-2"></i>
+                                خروج
+
+                            </a>
+
+                        {% else %}
+
+                            <a class="text-secondary mb-2"
+                               href="{% url 'account:login' %}">
+
+                                <i class="fa fa-angle-right mr-2"></i>
+                                ورود
+
+                            </a>
+
+                            <a class="text-secondary mb-2"
+                               href="{% url 'account:register' %}">
+
+                                <i class="fa fa-angle-right mr-2"></i>
+                                ثبت نام
+
+                            </a>
+
+                        {% endif %}
+
+
+                        <!-- Add Address -->
+                        {% if request.user.is_authenticated %}
+
+                            <a class="text-secondary mb-2"
+                               href="{% url 'account:add_address' %}">
+
+                                <i class="fa fa-angle-right mr-2"></i>
+                                آدرس‌ها
+
+                            </a>
+
+                        {% endif %}
+
+
+                        <!-- Cart -->
+                        <a class="text-secondary mb-2"
+                           href="{% url 'cart:cart_detail' %}">
+
+                            <i class="fa fa-angle-right mr-2"></i>
+                            سبد خرید
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Newsletter -->
+                <div class="col-md-4 mb-5">
+
+                    <h5 class="text-secondary text-uppercase mb-4">
+                        خبرنامه
+                    </h5>
+
+                    <p>
+                        برای دریافت جدیدترین اخبار و محصولات،
+                        ایمیل خود را وارد کنید.
+                    </p>
+
+                    <form action="#" method="post">
+
+                        {% csrf_token %}
+
+                        <div class="input-group">
+
+                            <input type="email"
+                                   class="form-control"
+                                   placeholder="ایمیل شما">
+
+                            <div class="input-group-append">
+
+                                <button type="submit"
+                                        class="btn btn-primary">
+
+                                    ثبت‌نام
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+
+
+                    <!-- Social Media -->
+                    <h6 class="text-secondary text-uppercase mt-4 mb-3">
+                        ما را دنبال کنید
+                    </h6>
+
+                    <div class="d-flex">
+
+                        <a class="btn btn-primary btn-square mr-2"
+                           href="#">
+
+                            <i class="fab fa-twitter"></i>
+
+                        </a>
+
+
+                        <a class="btn btn-primary btn-square mr-2"
+                           href="#">
+
+                            <i class="fab fa-facebook-f"></i>
+
+                        </a>
+
+
+                        <a class="btn btn-primary btn-square mr-2"
+                           href="#">
+
+                            <i class="fab fa-linkedin-in"></i>
+
+                        </a>
+
+
+                        <a class="btn btn-primary btn-square"
+                           href="#">
+
+                            <i class="fab fa-instagram"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Copyright -->
+    <div class="row border-top mx-xl-5 py-4"
+         style="border-color: rgba(256, 256, 256, .1) !important;">
+
+        <div class="col-md-6 px-xl-0">
+
+            <p class="mb-md-0 text-center text-md-left text-secondary">
+
+                &copy; {% now "Y" %}
+
+                <a class="text-primary"
+                   href="{% url 'Home:home' %}">
+
+                    فروشگاه
+
+                </a>
+
+                - تمامی حقوق محفوظ است.
+
+            </p>
+
+        </div>
+
+
+        <!-- Payment -->
+        <div class="col-md-6 px-xl-0 text-center text-md-right">
+
+            <img class="img-fluid"
+                 src="{% static 'img/payments.png' %}"
+                 alt="روش‌های پرداخت">
+
+        </div>
+
+    </div>
+
+</div>

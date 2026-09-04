@@ -14,6 +14,13 @@ admin.site.register(Color)
 admin.site.register(Size)
 
 
+@admin.register(models.Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('title','parent','slug')
+    prepopulated_fields = {'slug':('title',)}
+
+
+
 
 
 

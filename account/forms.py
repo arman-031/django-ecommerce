@@ -17,7 +17,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["phone",]
+        fields = ["phone", ]
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -46,16 +46,30 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["phone", "password",  "is_active", "is_admin"]
+        fields = ["phone", "password", "is_active", "is_admin"]
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),validators=[validators.MaxLengthValidator(50)])
+    phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), validators=[validators.MaxLengthValidator(50)])
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
 
 class RegisterForm(forms.Form):
-    phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),validators=[validators.MaxLengthValidator(50)])
+    phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), validators=[validators.MaxLengthValidator(50)])
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        password = cleaned_data.get('password')
+        password2 = cleaned_data.get('password2')
+
+        if password and password2 and password != password2:
+            raise ValidationError("Passwords don't match")
+
+        return cleaned_data
+
 
 class AddressCreationForm(forms.ModelForm):
     class Meta:

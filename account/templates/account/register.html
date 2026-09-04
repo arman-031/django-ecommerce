@@ -3,7 +3,7 @@
 {% block main %}
 <!-- Contact Start -->
 <div class="container-fluid">
-    <h2 class="section-title position-relative text-uppercase text-center mx-xl-5 mb-4"><span class="bg-secondary pr-3">Login</span>
+    <h2 class="section-title position-relative text-uppercase text-center mx-xl-5 mb-4"><span class="bg-secondary pr-3">فرم ثبت نام</span>
     </h2>
     <div class=" px-xl-5">
         <div class=" mb-5 contact-us" style="">
@@ -12,20 +12,33 @@
                 <form method="post">
                     {% csrf_token %}
                     <div class="control-group">
-                        {{form.errors}}
+                        {{ form.phone.label_tag }}
                         {{ form.phone }}
                         <p class="help-block text-danger"></p>
                     </div>
-
-                    <div>
-                        <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">ارسال
-                        </button>
+                    <div class="control-group">
+                        {{form.errors}}
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                        <p class="help-block text-danger"></p>
                     </div>
-                </form>
-            </div>
-        </div>
 
+            <div class="control-group">
+                {{form.errors}}
+                {{ form.password2.label_tag }}
+                {{ form.password2 }}
+                <p class="help-block text-danger"></p>
+            </div>
+
+            <div>
+                <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">ارسال
+                </button>
+            </div>
+            </form>
+        </div>
     </div>
+
+</div>
 </div>
 <!-- Contact End -->
 {%endblock %}

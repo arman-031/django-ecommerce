@@ -53,6 +53,9 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "phone"
     REQUIRED_FIELDS = []
 
+    class Meta:
+        verbose_name_plural = 'کاربران'
+
 
     def __str__(self):
         return self.phone
@@ -92,3 +95,5 @@ class Address(models.Model):
 
     def __str__(self):
         return self.user.phone
+    class Meta:
+        verbose_name_plural = 'آدرس'

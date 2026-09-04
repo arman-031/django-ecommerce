@@ -1,10 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% load static %}
+
+<div class="container-fluid">
+
+    <!-- Top Bar -->
+    <div class="row bg-secondary py-1 px-xl-5">
+
+        <div class="col-lg-6 d-none d-lg-block">
+
+            <div class="d-inline-flex align-items-center h-100">
+
+                <a class="text-body mr-3"
+                   href="#">
+
+                    درباره ما
+
+                </a>
+
+                <a class="text-body mr-3"
+                   href="#">
+
+                    تماس با ما
+
+                </a>
+
+                <a class="text-body mr-3"
+                   href="#">
+
+                    راهنما
+
+                </a>
+
+                <a class="text-body mr-3"
+                   href="#">
+
+                    سوالات متداول
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- Mobile Cart / Favorite -->
+        <div class="col-lg-6 text-center text-lg-right">
+
+            <div class="d-inline-flex align-items-center">
+
+                <div class="d-inline-flex align-items-center d-block d-lg-none">
+
+                    <!-- Favorite -->
+                    <a href="#"
+                       class="btn px-0 ml-2">
+
+                        <i class="fas fa-heart text-dark"></i>
+
+                        <span class="badge text-dark border border-dark rounded-circle"
+                              style="padding-bottom: 2px;">
+
+                            0
+
+                        </span>
+
+                    </a>
+
+
+                    <!-- Cart -->
+                    <a href="{% url 'cart:cart_detail' %}"
+                       class="btn px-0 ml-2">
+
+                        <i class="fas fa-shopping-cart text-dark"></i>
+
+                        <span class="badge text-dark border border-dark rounded-circle"
+                              style="padding-bottom: 2px;">
+
+                            0
+
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Main Header -->
+    <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+
+
+        <!-- Logo -->
+        <div class="col-lg-4">
+
+            <a href="{% url 'Home:home' %}"
+               class="text-decoration-none">
+
+                <span class="h1 text-uppercase text-primary bg-dark px-2">
+                    Multi
+                </span>
+
+                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">
+                    فروشگاه
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- Search -->
+        <div class="col-lg-4 col-6 text-left">
+<form action="{% url 'product:product_list' %}"
+      method="get">
+
+    <div class="input-group">
+
+        <input type="text"
+               name="q"
+               value="{{ request.GET.q|default:'' }}"
+               class="form-control"
+               placeholder="جستجوی محصولات">
+
+        <div class="input-group-append">
+
+            <button type="submit"
+                    class="input-group-text bg-transparent text-primary border-0">
+
+                <i class="fa fa-search"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</form>
+
+        </div>
+
+
+        <!-- Customer Service -->
+        <div class="col-lg-4 col-6 text-right">
+
+            <p class="m-0">
+                پشتیبانی مشتریان
+            </p>
+
+            <h5 class="m-0">
+                09123456789
+            </h5>
+
+        </div>
+
+    </div>
+
+</div>

@@ -3,7 +3,7 @@
 {% block main %}
 <!-- Contact Start -->
 <div class="container-fluid">
-    <h2 class="section-title position-relative text-uppercase text-center mx-xl-5 mb-4"><span class="bg-secondary pr-3">Login</span>
+    <h2 class="section-title position-relative text-uppercase text-center mx-xl-5 mb-4"><span class="bg-secondary pr-3">جهت ورود به سایت شماره تلفن و نام کاربری خود را وارد کنید</span>
     </h2>
     <div class=" px-xl-5">
         <div class=" mb-5 contact-us" style="">
@@ -13,18 +13,24 @@
                     {% csrf_token %}
                     <div class="control-group">
                         {{form.errors}}
+                        {{ form.phone.label_tag }}
                         {{ form.phone }}
                         <p class="help-block text-danger"></p>
                     </div>
 
                     <div class="control-group">
+                        {{ form.passeord.label_tag }}
                         {{ form.password }}
                         <p class="help-block text-danger"></p>
                     </div>
 
                     <div>
-                        <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">login
+                        <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">ورود
                         </button>
+                    </div>
+                      <div>
+                        <a href="{% url 'account:register' %}"  class="btn btn-primary py-2 px-4 mt-3" type="submit" id="sendessageButton">ثبت نام
+                        </a>
                     </div>
                 </form>
             </div>

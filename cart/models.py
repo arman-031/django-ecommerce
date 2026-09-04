@@ -10,6 +10,9 @@ class Order(models.Model):
     created=models.DateTimeField(auto_now_add=True)
     is_paid=models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name_plural = 'سبد خرید'
+
     def __str__(self):
         return self.user.phone
 
@@ -21,13 +24,18 @@ class OrderItem(models.Model):
     color=models.CharField(max_length=10)
     quantity=models.SmallIntegerField()
     price=models.PositiveIntegerField()
+    class Meta:
+        verbose_name_plural = 'سبد محصولات'
 
 class Discount(models.Model):
     name=models.CharField(max_length=10,unique=True)
     discount=models.SmallIntegerField(default=0)
     quantity=models.SmallIntegerField(default=1)
+
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name_plural = 'تخفیف'
 
 
 

@@ -1,0 +1,617 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+
+<div class="container-fluid">
+
+    <div class="row px-xl-5">
+
+        <!-- Shop Sidebar Start -->
+        <div class="col-lg-3 col-md-4">
+
+
+            <!-- Price Start -->
+            <h5 class="section-title position-relative text-uppercase mb-3">
+
+                <span class="bg-secondary pr-3">
+                    فیلتر قیمت
+                </span>
+
+            </h5>
+
+            <div class="bg-light p-4 mb-30">
+
+                <form method="get">
+
+                    <!-- Keep Search -->
+                    <input type="hidden"
+                           name="q"
+                           value="{{ query|default:'' }}">
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               checked
+                               id="price-all">
+
+                        <label class="custom-control-label"
+                               for="price-all">
+
+                            همه قیمت‌ها
+
+                        </label>
+
+                        <span class="badge border font-weight-normal">
+
+                            {{ products.paginator.count }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               id="price-1">
+
+                        <label class="custom-control-label"
+                               for="price-1">
+
+                            کمتر از ۱۰۰
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               id="price-2">
+
+                        <label class="custom-control-label"
+                               for="price-2">
+
+                            ۱۰۰ تا ۲۰۰
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               id="price-3">
+
+                        <label class="custom-control-label"
+                               for="price-3">
+
+                            ۲۰۰ تا ۳۰۰
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               id="price-4">
+
+                        <label class="custom-control-label"
+                               for="price-4">
+
+                            ۳۰۰ تا ۴۰۰
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               id="price-5">
+
+                        <label class="custom-control-label"
+                               for="price-5">
+
+                            بیشتر از ۴۰۰
+
+                        </label>
+
+                    </div>
+
+                </form>
+
+            </div>
+            <!-- Price End -->
+
+
+            <!-- Color Start -->
+
+            <h5 class="section-title position-relative text-uppercase mb-3">
+
+                <span class="bg-secondary pr-3">
+                    فیلتر رنگ
+                </span>
+
+            </h5>
+
+            <div class="bg-light p-4 mb-30">
+
+                <form method="get">
+
+                    <!-- Keep Search -->
+                    <input type="hidden"
+                           name="q"
+                           value="{{ query|default:'' }}">
+
+
+                    <!-- All Colors -->
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               id="color-all">
+
+                        <label class="custom-control-label"
+                               for="color-all">
+
+                            همه رنگ‌ها
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- Colors -->
+
+                    {% for color in colors %}
+
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+
+                            <input type="checkbox"
+                                   class="custom-control-input"
+                                   name="color"
+                                   value="{{ color.id }}"
+                                   id="color-{{ color.id }}"
+
+                                   {% if selected_color == color.id|stringformat:"s" %}
+                                       checked
+                                   {% endif %}
+
+                                   onchange="this.form.submit()">
+
+
+                            <label class="custom-control-label"
+                                   for="color-{{ color.id }}">
+
+                                {{ color.title }}
+
+                            </label>
+
+                        </div>
+
+                    {% endfor %}
+
+                </form>
+
+            </div>
+
+            <!-- Color End -->
+
+
+            <!-- Size Start -->
+
+            <h5 class="section-title position-relative text-uppercase mb-3">
+
+                <span class="bg-secondary pr-3">
+                    فیلتر سایز
+                </span>
+
+            </h5>
+
+            <div class="bg-light p-4 mb-30">
+
+                <form method="get">
+
+                    <!-- Keep Search -->
+                    <input type="hidden"
+                           name="q"
+                           value="{{ query|default:'' }}">
+
+
+                    <!-- All Sizes -->
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               id="size-all">
+
+                        <label class="custom-control-label"
+                               for="size-all">
+
+                            همه سایزها
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- Sizes -->
+
+                    {% for size in sizes %}
+
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+
+                            <input type="checkbox"
+                                   class="custom-control-input"
+                                   name="size"
+                                   value="{{ size.id }}"
+                                   id="size-{{ size.id }}"
+
+                                   {% if selected_size == size.id|stringformat:"s" %}
+                                       checked
+                                   {% endif %}
+
+                                   onchange="this.form.submit()">
+
+
+                            <label class="custom-control-label"
+                                   for="size-{{ size.id }}">
+
+                                {{ size.title }}
+
+                            </label>
+
+                        </div>
+
+                    {% endfor %}
+
+                </form>
+
+            </div>
+
+            <!-- Size End -->
+
+        </div>
+        <!-- Shop Sidebar End -->
+
+
+        <!-- Shop Product Start -->
+
+        <div class="col-lg-9 col-md-8">
+
+            <div class="row pb-3">
+
+
+                <!-- Sorting -->
+
+                <div class="col-12 pb-1">
+
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+
+
+                        <!-- Result Count -->
+
+                        <div>
+
+                            <span>
+                                تعداد محصولات:
+                            </span>
+
+                            <strong>
+                                {{ products.paginator.count }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Sorting -->
+
+                        <div class="ml-2">
+
+                            <div class="btn-group">
+
+                                <button type="button"
+                                        class="btn btn-sm btn-light dropdown-toggle"
+                                        data-toggle="dropdown">
+
+                                    مرتب‌سازی
+
+                                </button>
+
+                                <div class="dropdown-menu dropdown-menu-right">
+
+                                    <a class="dropdown-item"
+                                       href="#">
+
+                                        جدیدترین
+
+                                    </a>
+
+                                    <a class="dropdown-item"
+                                       href="#">
+
+                                        محبوب‌ترین
+
+                                    </a>
+
+                                    <a class="dropdown-item"
+                                       href="#">
+
+                                        بهترین امتیاز
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Search Result -->
+
+                {% if query %}
+
+                    <div class="col-12 mb-3">
+
+                        <div class="alert alert-info">
+
+                            نتایج جستجو برای:
+
+                            <strong>
+                                {{ query }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- Products -->
+
+                {% for product in products %}
+
+                    <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+
+                        <div class="product-item bg-light mb-4">
+
+
+                            <!-- Image -->
+
+                            <div class="product-img position-relative overflow-hidden">
+
+                                {% if product.image %}
+
+                                    <img class="img-fluid w-100"
+                                         src="{{ product.image.url }}"
+                                         alt="{{ product.title }}">
+
+                                {% else %}
+
+                                    <img class="img-fluid w-100"
+                                         src="{% static 'img/product-1.jpg' %}"
+                                         alt="{{ product.title }}">
+
+                                {% endif %}
+
+
+                                <div class="product-action">
+
+                                    <!-- Detail -->
+
+                                    <a class="btn btn-outline-dark btn-square"
+                                       href="{% url 'product:product_detial' pk=product.id %}">
+
+                                        <i class="fa fa-search"></i>
+
+                                    </a>
+
+
+                                    <!-- Cart -->
+
+                                    <a class="btn btn-outline-dark btn-square"
+                                       href="{% url 'product:product_detial' pk=product.id %}">
+
+                                        <i class="fa fa-shopping-cart"></i>
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Product Info -->
+
+                            <div class="text-center py-4">
+
+                                <a class="h6 text-decoration-none text-truncate"
+                                   href="{% url 'product:product_detial' pk=product.id %}">
+
+                                    {{ product.title }}
+
+                                </a>
+
+
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+
+                                    <h5>
+                                        {{ product.price }}
+                                    </h5>
+
+
+                                    {% if product.discount %}
+
+                                        <h6 class="text-muted ml-2">
+
+                                            <del>
+                                                {{ product.price }}
+                                            </del>
+
+                                        </h6>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                {% empty %}
+
+                    <div class="col-12">
+
+                        <div class="alert alert-warning text-center">
+
+                            {% if query %}
+
+                                محصولی با عبارت
+                                <strong>{{ query }}</strong>
+                                پیدا نشد.
+
+                            {% else %}
+
+                                محصولی برای نمایش وجود ندارد.
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+
+                <!-- Pagination -->
+
+                {% if page_obj.paginator.num_pages > 1 %}
+
+                    <div class="col-12">
+
+                        <nav>
+
+                            <ul class="pagination justify-content-center">
+
+
+                                <!-- Previous -->
+
+                                {% if page_obj.has_previous %}
+
+                                    <li class="page-item">
+
+                                        <a class="page-link"
+                                           href="?{% if query %}q={{ query }}&{% endif %}{% if selected_color %}color={{ selected_color }}&{% endif %}{% if selected_size %}size={{ selected_size }}&{% endif %}page={{ page_obj.previous_page_number }}">
+
+                                            قبلی
+
+                                        </a>
+
+                                    </li>
+
+                                {% else %}
+
+                                    <li class="page-item disabled">
+
+                                        <span class="page-link">
+
+                                            قبلی
+
+                                        </span>
+
+                                    </li>
+
+                                {% endif %}
+
+
+                                <!-- Page Numbers -->
+
+                                {% for num in page_obj.paginator.page_range %}
+
+                                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+
+                                        <a class="page-link"
+                                           href="?{% if query %}q={{ query }}&{% endif %}{% if selected_color %}color={{ selected_color }}&{% endif %}{% if selected_size %}size={{ selected_size }}&{% endif %}page={{ num }}">
+
+                                            {{ num }}
+
+                                        </a>
+
+                                    </li>
+
+                                {% endfor %}
+
+
+                                <!-- Next -->
+
+                                {% if page_obj.has_next %}
+
+                                    <li class="page-item">
+
+                                        <a class="page-link"
+                                           href="?{% if query %}q={{ query }}&{% endif %}{% if selected_color %}color={{ selected_color }}&{% endif %}{% if selected_size %}size={{ selected_size }}&{% endif %}page={{ page_obj.next_page_number }}">
+
+                                            بعدی
+
+                                        </a>
+
+                                    </li>
+
+                                {% else %}
+
+                                    <li class="page-item disabled">
+
+                                        <span class="page-link">
+
+                                            بعدی
+
+                                        </span>
+
+                                    </li>
+
+                                {% endif %}
+
+
+                            </ul>
+
+                        </nav>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <!-- Shop Product End -->
+
+    </div>
+
+</div>
+
+{% endblock %}
