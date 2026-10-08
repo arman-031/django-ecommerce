@@ -1,185 +1,27 @@
 {% extends 'base.html' %}
-{% load static %}
-
 {% block main %}
-
-<div class="container-fluid">
-    <div class="row px-xl-5">
-
-        <!-- Order Items -->
-        <div class="col-lg-8 table-responsive mb-5">
-
-            <table class="table table-light table-borderless table-hover text-center mb-0">
-
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Image</th>
-                        <th>Title</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Color</th>
-                        <th>Size</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-
-                <tbody class="align-middle">
-
-                    {% for item in order.items.all %}
-
-                    <tr>
-
-                        <td class="align-middle">
-                            <img src="{{ item.product.image.url }}"
-                                 alt="{{ item.product.title }}"
-                                 style="width: 50px;">
-                        </td>
-
-                        <td class="align-middle">
-                            {{ item.product.title }}
-                        </td>
-
-                        <td class="align-middle">
-                            ${{ item.price }}
-                        </td>
-
-                        <td class="align-middle">
-                            {{ item.quantity }}
-                        </td>
-
-                        <td class="align-middle">
-                            {{ item.color }}
-                        </td>
-
-                        <td class="align-middle">
-                            {{ item.size }}
-                        </td>
-
-                        <td class="align-middle">
-                            ${{ item.total }}
-                        </td>
-
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-
-        <!-- Order Summary -->
-        <div class="col-lg-4">
-
-            <!-- Discount -->
-            <form class="mb-30"
-                  method="post"
-                  action="{% url 'cart:discount' order.id %}">
-
-                {% csrf_token %}
-
-                <div class="input-group">
-
-                    <input type="text"
-                           name="discount_code"
-                           class="form-control border-0 p-4"
-                           placeholder="کد تخفیف">
-
-                    <div class="input-group-append">
-
-                        <button type="submit"
-                                class="btn btn-primary">
-                            اعمال کد تخفیف
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </form>
-
-
-            <!-- Cart Summary -->
-            <h5 class="section-title position-relative text-uppercase mb-3">
-
-                <span class="bg-secondary pr-3">
-                    Cart Summary
-                </span>
-
-            </h5>
-
-
-            <div class="bg-light p-30 mb-5">
-
-                <div class="border-bottom pb-2">
-
-                </div>
-
-
-                <div class="pt-2">
-
-                    <div class="d-flex justify-content-between mt-2">
-
-                        <h5>Total</h5>
-
-                        <h5>
-                            ${{ order.total_price }}
-                        </h5>
-
-                    </div>
-
-
-                    <!-- Payment -->
-                    <a href=""
-                       class="btn btn-block btn-success font-weight-bold my-3 py-3">
-                        پرداخت
-                    </a>
-
-
-                    <!-- Address -->
-                    {% if request.user.addresses.all %}
-
-                        <select class="form-control"
-                                aria-label="Default select example">
-
-                            <option selected>
-                                آدرس خود را انتخاب کنید
-                            </option>
-
-                            {% for address in request.user.addresses.all %}
-
-                                <option value="1">
-                                    {{ address.address }}
-                                </option>
-
-                            {% endfor %}
-
-                        </select>
-
-
-                        <a href="{% url 'account:add_address' %}?next={% url 'cart:order_detail' order.id %}"
-                           class="btn btn-block btn-primary font-weight-bold my-3 py-3">
-                            ثبت آدرس
-                        </a>
-
-                    {% else %}
-
-                        <a href="{% url 'account:add_address' %}?next={% url 'cart:order_detail' order.id %}"
-                           class="btn btn-block btn-primary font-weight-bold my-3 py-3">
-                            آدرسی برای شما ثبت نشده، جهت ثبت آدرس کلیک کنید
-                        </a>
-
-                    {% endif %}
-
-                </div>
-
-            </div>
-
-        </div>
-
+<div class="container-fluid px-xl-5 mb-5">
+    <h3>سفارش شماره {{ order.pk }}</h3>
+    <div class="table-responsive">
+        <table class="table table-light text-center">
+            <thead><tr><th>محصول</th><th>قیمت واحد (تومان)</th><th>تعداد</th><th>رنگ</th><th>سایز</th><th>جمع (تومان)</th></tr></thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr><td>{{ item.product.title }}</td><td>{{ item.price }}</td><td>{{ item.quantity }}</td><td>{{ item.color|default:'—' }}</td><td>{{ item.size|default:'—' }}</td><td>{{ item.total }}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
+    <p>مبلغ نهایی: {{ order.total_price }} تومان</p>
+    {% if not order.is_paid and not order.discount_applied %}
+    <form method="post" action="{% url 'cart:discount' order.pk %}" class="mb-3">
+        {% csrf_token %}
+        <label for="discount-code">کد تخفیف</label>
+        <input id="discount-code" name="discount_code" maxlength="10" required>
+        <button type="submit" class="btn btn-primary">اعمال کد تخفیف</button>
+    </form>
+    {% elif order.discount_applied %}<p>تخفیف روی این سفارش اعمال شده است.</p>{% endif %}
+    <p>پرداخت آنلاین و اتصال آدرس به سفارش هنوز پیاده‌سازی نشده‌اند.</p>
+    <a href="{% url 'account:add_address' %}" class="btn btn-primary">ثبت آدرس در حساب کاربری</a>
 </div>
-
 {% endblock %}

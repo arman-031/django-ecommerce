@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 class Size(models.Model):
     title = models.CharField(max_length=120)
@@ -29,7 +30,7 @@ class Product(models.Model):
     category = models.ManyToManyField(Category)
     title = models.CharField(max_length=100)
     description = models.TextField()
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     discount = models.FloatField()
     image = models.ImageField(upload_to='products')
     size = models.ManyToManyField(Size,blank=True,related_name='products')
@@ -39,6 +40,9 @@ class Product(models.Model):
 
     class Meta:
         verbose_name_plural = 'محصولات'
+        constraints = [
+            models.CheckConstraint(condition=models.Q(price__gte=0), name='product_price_nonnegative'),
+        ]
 
     def __str__(self):
         return self.title
