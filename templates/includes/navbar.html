@@ -189,12 +189,10 @@
                         <!-- Account -->
                         {% if request.user.is_authenticated %}
 
-                            <a href="{% url 'account:logout' %}"
-                               class="nav-item nav-link">
-
-                                خروج
-
-                            </a>
+                            <form method="post" action="{% url 'account:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link">خروج</button>
+                            </form>
 
                         {% else %}
 

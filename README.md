@@ -1,221 +1,121 @@
 # Django E-Commerce
 
-A Django-based e-commerce web application built to practice and demonstrate core backend development concepts through a real-world shopping workflow.
+A Persian Django storefront built as a learning project for backend development.
+**Status: in development.** The shopping cart and order workflow have regression tests;
+this is not a production-ready store. My main portfolio project is
+[Coach Management System](https://github.com/arman-031/coach-management-system).
 
-## Overview
+## Implemented features
 
-This project is an online store developed with Django. It implements common e-commerce features such as user authentication, product management, product filtering and search, session-based shopping cart, order creation, and discount codes.
+- Custom phone-based users, registration, password validation, login and POST logout.
+- Optional email authentication for users whose email has been set; inactive users cannot log in.
+- Products, categories, search, color/size filtering and pagination.
+- Session cart with product-specific option validation and quantities from 1 to 99 per line.
+- Decimal prices in **tomans**, with two decimal places retained for exact arithmetic.
+- POST order creation, atomic order/item storage and a unique checkout token to prevent replaying the same cart.
+- Prices are recalculated from the product catalog at checkout; saved order items retain that price.
+- One discount per unpaid order, with a transaction and conditional updates to guard coupon usage.
+- Owner-only order details and authenticated address creation in the account.
+- Django admin for products, users, addresses, orders and discount codes.
 
-The main purpose of this project was to move from learning individual Django concepts to combining them into a complete backend application.
+## Not implemented yet
 
-## Features
+Payment gateway, order/address linkage, shipping charges, inventory tracking, order status
+workflow, price-range filtering, REST API, Redis integration and production deployment.
+The storefront template still contains some placeholder sections and English text.
+Registration currently uses phone and password; SMS/OTP verification is not implemented.
 
-* User registration and authentication
-* Login and logout
-* Custom user model
-* Email-based authentication
-* Product and category management
-* Product detail pages
-* Dynamic category navigation
-* Product search
-* Product filtering by:
+## Stack and structure
 
-  * Category
-  * Color
-  * Size
-  * Price range
-* Product pagination
-* Session-based shopping cart
-* Add and remove products from cart
-* Product quantity management
-* Product color and size selection
-* Order creation
-* User-specific order information
-* Discount code system
-* Django Admin panel
-* Dynamic homepage content
+Python 3.12 (tested), Django 5.2.9, SQLite, Django Templates, Bootstrap, Pillow and python-dotenv.
 
-## Technologies
+| Directory | Purpose |
+| --- | --- |
+| `Blog/` | Project settings and URL routing (original project name) |
+| `Home/` | Homepage |
+| `account/` | Users, authentication, registration and account addresses |
+| `product/` | Catalog, search and filters |
+| `cart/` | Session cart, orders, coupons and regression tests |
+| `templates/`, `static/` | Shared templates and storefront assets |
 
-* Python
-* Django
-* Django Templates
-* SQLite
-* HTML5
-* CSS3
-* Bootstrap
-* JavaScript
-* Git
-* GitHub
-
-## Backend Concepts
-
-This project was developed to practice and understand several important backend concepts:
-
-* Django Class-Based Views
-* Django Models and ORM
-* Foreign Key relationships
-* Many-to-Many relationships
-* Custom User Model
-* Authentication backends
-* User authentication
-* Sessions and cookies
-* Query parameters
-* Database filtering
-* Pagination
-* CRUD operations
-* Form handling
-* Access control
-* Django Admin
-* URL routing
-* Template context
-* Session-based cart management
-* Order and discount business logic
-
-## Project Structure
-
-```text
-django-ecommerce/
-│
-├── Blog/              # Django project configuration
-├── Home/              # Homepage functionality
-├── account/           # Authentication and user management
-├── cart/              # Cart, orders and discount functionality
-├── product/           # Products, categories, colors and sizes
-├── static/            # CSS, JavaScript and static images
-├── templates/         # Django templates
-├── manage.py
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
-
-## Installation
-
-### 1. Clone the repository
+## Local setup
 
 ```bash
 git clone https://github.com/arman-031/django-ecommerce.git
 cd django-ecommerce
-```
-
-### 2. Create a virtual environment
-
-```bash
 python -m venv venv
 ```
 
-Activate the virtual environment.
+Activate on Windows PowerShell:
 
-**Windows:**
-
-```bash
-venv\Scripts\activate
+```powershell
+.\venv\Scripts\Activate.ps1
 ```
 
-### 3. Install dependencies
+Or on macOS/Linux:
 
 ```bash
-pip install -r requirements.txt
+source venv/bin/activate
 ```
 
-### 4. Apply migrations
+Install dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Copy `.env.example` to `.env` (`Copy-Item .env.example .env` on PowerShell,
+`cp .env.example .env` on macOS/Linux). Generate a key:
+
+```bash
+python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+```
+
+Paste it into `.env` as `DJANGO_SECRET_KEY='your-generated-key'` (keep the quotes).
+Use `DJANGO_DEBUG=True` and `DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1` for local development.
+The actual `.env`, database and uploaded media are ignored by Git. Do not commit real keys.
+No Redis service is needed for local setup; the default cache is in memory.
 
 ```bash
 python manage.py migrate
-```
-
-### 5. Create a superuser
-
-```bash
 python manage.py createsuperuser
-```
-
-### 6. Run the development server
-
-```bash
 python manage.py runserver
 ```
 
-Then open:
+Open <http://127.0.0.1:8000/> and <http://127.0.0.1:8000/admin/>.
+Create products and their available colors/sizes in admin before trying the shopping flow.
+Product discounts in the catalog are not applied automatically; the implemented discount
+flow uses order coupon codes.
 
-```text
-http://127.0.0.1:8000/
+### Existing local databases
+
+Back up your database before applying the new migrations. They convert float/integer
+money columns to two-decimal `DecimalField` columns and add integrity constraints.
+Old float values are rounded to two decimal places. Existing negative prices/totals,
+order quantities outside 1–99, or coupon percentages outside 0–100 must be corrected
+before migration. New fields do not reconstruct the discount history of older orders.
+
+## Tests
+
+```bash
+python manage.py check
+python manage.py makemigrations account product cart Home --check --dry-run
+python manage.py test
 ```
 
-## Admin Panel
+GitHub Actions runs these checks plus a clean database migration on every push and pull request.
+Tests cover input validation, exact money calculations, CSRF, access control, inactive
+accounts, checkout replay, rollback after failed order creation, and coupon exhaustion/reuse.
+The local suite uses SQLite; true concurrent requests on PostgreSQL have not been tested.
 
-The Django Admin panel can be used to manage application data such as:
+## Next steps
 
-* Products
-* Categories
-* Colors
-* Sizes
-* Orders
-* Discount codes
-* Users
-* Addresses
-
-## Application Flow
-
-The main shopping workflow can be summarized as:
-
-```text
-User
-  │
-  ▼
-Authentication
-  │
-  ▼
-Browse Products
-  │
-  ├── Search
-  ├── Filter
-  └── Pagination
-  │
-  ▼
-Product Details
-  │
-  ▼
-Session-based Cart
-  │
-  ▼
-Order Creation
-  │
-  ▼
-Discount
-```
-
-## Project Status
-
-The core e-commerce functionality has been implemented.
-
-This project is currently being used as a backend development portfolio project. Further improvements are planned to make the application closer to production-level standards.
-
-## Future Improvements
-
-* Automated testing
-* PostgreSQL database
-* Django REST Framework API
-* Payment gateway integration
-* Improved order status management
-* Stronger input validation
-* Better error handling
-* Query optimization
-* Redis caching improvements
-* Production deployment
-* API documentation
-
-## Learning Outcomes
-
-Working on this project helped me understand how different backend components work together in a real-world application.
-
-Instead of focusing only on individual Django features, the project combines authentication, database relationships, sessions, business logic, filtering, pagination, orders, and discounts into one application.
+1. Link a selected account address to an order and define order statuses.
+2. Add inventory checks and payment integration with idempotent callbacks.
+3. Move to PostgreSQL and test real concurrent checkout/coupon requests.
+4. Complete Persian copy and replace remaining template placeholders.
+5. Add a DRF API and deployment configuration once the storefront flow is stable.
 
 ## Author
 
-**Arman Rezagholian**
-
-Backend Developer | Python & Django
-
-This project was developed as part of my backend development learning and portfolio journey.
+Arman Rezagholian — Backend Developer | Python & Django

@@ -20,6 +20,11 @@
 <!-- Navbar End -->
 
 
+{% if messages %}
+<div class="container-fluid px-xl-5" role="status">
+    {% for message in messages %}<div class="alert alert-info">{{ message }}</div>{% endfor %}
+</div>
+{% endif %}
 {% block main %}
 
 {% endblock %}
@@ -59,4 +64,3 @@
 </body>
 
 </html>
-```

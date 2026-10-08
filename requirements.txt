@@ -3,4 +3,4 @@ django-admin-persian-fonts==0.2
 django-cleanup==9.0.0
 django-render-partial==0.4
 Pillow==12.3.0
-python-dotenv==1.2.1w==12.3.0
+python-dotenv==1.2.1
